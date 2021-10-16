@@ -16,7 +16,7 @@ export default class Searchbar extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    if (this.state.hitsName.trim() === "") {
+    if (this.state.searchQuery.trim() === "") {
       toast("Empty input!");
       return;
     }
