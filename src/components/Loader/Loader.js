@@ -7,10 +7,10 @@ export default class Spinner extends React.Component {
   render() {
     return (
       <Loader
-        type="Puff"
+        type="TailSpin"
         color="#00BFFF"
-        height={100}
-        width={100}
+        height={80}
+        width={80}
         timeout={3000} //3 secs
       />
     );
