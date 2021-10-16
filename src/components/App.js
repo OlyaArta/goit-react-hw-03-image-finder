@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Searchbar from "./Searchbar/Searchbar.js";
 import fetchImages from "./services/API";
@@ -18,9 +19,10 @@ export default class App extends React.Component {
     searchQuery: "",
     images: [],
     page: 1,
-    showModal: false,
+    showModal: null,
     loading: false,
     alt: null,
+    error: null,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -52,11 +54,12 @@ export default class App extends React.Component {
       this.setState({ loading: false });
     }
   }
+  openModal = (largeImageUrl, tags) => {
+    this.setState({ alt: tags, showModal: largeImageUrl });
+  };
 
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
+  closeModal = () => {
+    this.setState({ showModal: false });
   };
 
   handleFormSubmit = (searchQuery) => {
@@ -65,13 +68,6 @@ export default class App extends React.Component {
     }
     this.cleanState();
     this.setState({ searchQuery });
-  };
-
-  modalClick = (largeImageUrl, tags) => {
-    this.setState({
-      showModal: largeImageUrl,
-      alt: tags,
-    });
   };
 
   loadMore = () => {
@@ -85,9 +81,10 @@ export default class App extends React.Component {
       searchQuery: "",
       images: [],
       page: 1,
-      showModal: true,
+      showModal: null,
       loading: false,
       alt: null,
+      error: null,
     });
   };
 
@@ -96,10 +93,10 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery img={images} onImgClick={this.modalClick} />
+        <ImageGallery img={images} onImgClick={this.openModal} />
         {images.length > 1 && <Button onClick={this.loadMore} />}
         {showModal && (
-          <Modal showModal={showModal} onClose={this.toggleModal} tags={alt} />
+          <Modal showModal={showModal} tags={alt} onClose={this.closeModal} />
         )}
         {loading && <Spinner />}
         <ToastContainer autoClose={2500} />
