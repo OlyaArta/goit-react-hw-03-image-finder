@@ -19,10 +19,11 @@ export default class App extends React.Component {
     searchQuery: "",
     images: [],
     page: 1,
-    showModal: null,
+    showModal: false,
     loading: false,
-    alt: null,
-    error: null,
+    largeImage: {},
+    // alt: null,
+    // error: null,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -54,19 +55,11 @@ export default class App extends React.Component {
       this.setState({ loading: false });
     }
   }
-  openModal = (largeImageUrl, tags) => {
-    this.setState({ alt: tags, showModal: largeImageUrl });
-  };
-
-  closeModal = () => {
-    this.setState({ showModal: false });
-  };
 
   handleFormSubmit = (searchQuery) => {
     if (this.state.searchQuery === searchQuery) {
       return;
     }
-    this.cleanState();
     this.setState({ searchQuery });
   };
 
@@ -76,27 +69,36 @@ export default class App extends React.Component {
     }));
   };
 
-  cleanState = () => {
-    this.setState({
-      searchQuery: "",
-      images: [],
-      page: 1,
-      showModal: null,
-      loading: false,
-      alt: null,
-      error: null,
-    });
+  // openModal = (largeImageUrl, tags) => {
+  //   this.setState({ alt: tags, showModal: true });
+  // };
+
+  // closeModal = () => {
+  //   this.setState({ showModal: false });
+  // };
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  clickImages = (largeImage) => {
+    this.setState({ largeImage });
+    this.toggleModal();
   };
 
   render() {
-    const { showModal, loading, images, alt } = this.state;
+    const { showModal, loading, images, largeImage } = this.state;
     return (
       <div className="App">
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery img={images} onImgClick={this.openModal} />
+        <ImageGallery img={images} onModal={this.clickImages} />
         {images.length > 1 && <Button onClick={this.loadMore} />}
         {showModal && (
-          <Modal showModal={showModal} tags={alt} onClose={this.closeModal} />
+          <Modal onModal={this.toggleModal}>
+            <img src={largeImage.largeImageURL} alt={largeImage.tags} />
+          </Modal>
         )}
         {loading && <Spinner />}
         <ToastContainer autoClose={2500} />
