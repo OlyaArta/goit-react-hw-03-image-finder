@@ -21,7 +21,7 @@ export default class App extends React.Component {
     page: 1,
     showModal: false,
     loading: false,
-    largeImage: {},
+    largeImage: "",
     // alt: null,
     // error: null,
   };
@@ -57,10 +57,17 @@ export default class App extends React.Component {
   }
 
   handleFormSubmit = (searchQuery) => {
-    if (this.state.searchQuery === searchQuery) {
-      return;
-    }
+    this.cleanPage();
     this.setState({ searchQuery });
+  };
+
+  cleanPage = () => {
+    this.setState({
+      searchQuery: "",
+      page: 1,
+      images: [],
+      showModal: false,
+    });
   };
 
   loadMore = () => {
@@ -83,9 +90,9 @@ export default class App extends React.Component {
     }));
   };
 
-  clickImages = (largeImage) => {
-    this.setState({ largeImage });
-    this.toggleModal();
+  clickImages = (e) => {
+    const modalImg = e.currentTarget.alt;
+    this.setState({ showModal: true, largeImage: modalImg });
   };
 
   render() {
@@ -93,12 +100,10 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery img={images} onModal={this.clickImages} />
+        <ImageGallery img={images} clickImages={this.clickImages} />
         {images.length > 1 && <Button onClick={this.loadMore} />}
         {showModal && (
-          <Modal onModal={this.toggleModal}>
-            <img src={largeImage.largeImageURL} alt={largeImage.tags} />
-          </Modal>
+          <Modal onClick={this.toggleModal} largeImage={largeImage} />
         )}
         {loading && <Spinner />}
         <ToastContainer autoClose={2500} />

@@ -1,17 +1,32 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import s from "./ImageGalleryItem.module.css";
 
-const ImageGalleryItem = ({ image, tags }) => {
+export default function ImageGalleryItem({
+  webformatURL,
+  largeImageURL,
+  onClick,
+}) {
   return (
     <li className={s.ImageGalleryItem}>
-      <img src={image} alt={tags} className={s.ImageGalleryItemImage} />
+      <img
+        src={webformatURL}
+        alt={largeImageURL}
+        className={s.ImageGalleryItemImage}
+        onClick={onClick}
+      />
     </li>
   );
-};
+}
 
-ImageGalleryItem.propTypes = {
-  tags: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-};
+// const ImageGalleryItem = ({ image, tags }) => {
+//   return (
+//     <li className={s.ImageGalleryItem}>
+//       <img src={image} alt={tags} className={s.ImageGalleryItemImage} />
+//     </li>
+//   );
+// };
 
-export default ImageGalleryItem;
+// ImageGalleryItem.propTypes = {
+//   tags: PropTypes.string.isRequired,
+//   image: PropTypes.string.isRequired,
+// };
