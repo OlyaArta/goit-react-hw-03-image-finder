@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -11,10 +10,6 @@ import Spinner from "./Loader/Loader";
 import Button from "./Button/Button";
 
 export default class App extends React.Component {
-  static propTypes = {
-    searchQuery: PropTypes.string,
-  };
-
   state = {
     searchQuery: "",
     images: [],
@@ -22,8 +17,6 @@ export default class App extends React.Component {
     showModal: false,
     loading: false,
     largeImage: "",
-    // alt: null,
-    // error: null,
   };
 
   async componentDidUpdate(prevProps, prevState) {
