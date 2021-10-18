@@ -93,7 +93,9 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery img={images} clickImages={this.clickImages} />
+        {images.length > 0 && (
+          <ImageGallery img={images} clickImages={this.clickImages} />
+        )}
         {images.length > 1 && <Button onClick={this.loadMore} />}
         {showModal && (
           <Modal onClick={this.toggleModal} largeImage={largeImage} />
